@@ -1,9 +1,19 @@
 [build]
-builder = "nixpacks"
+builder = "heroku"
+
+[deploy]
+startCommand = "vendor/bin/heroku-php-apache2 public/"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+
+[env]
+NIXPACKS_PHP_VERSION = "8.2"
+COMPOSER_INSTALL_OPTIONS = "--no-dev --optimize-autoloader"er = "nixpacks"
 
 [deploy]
 startCommand = "php artisan serve --host=0.0.0.0 --port=$PORT"
-healthcheckPath = "/"
+healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 
@@ -11,3 +21,5 @@ restartPolicyType = "on_failure"
 PORT = 8000
 NIXPACKS_PHP_VERSION = "8.2"
 COMPOSER_INSTALL_OPTIONS = "--no-dev --optimize-autoloader"
+NIXPACKS_INSTALL_CMD = "composer install --no-dev --optimize-autoloader"
+NIXPACKS_BUILD_CMD = "echo 'Skipping frontend build for now'"
